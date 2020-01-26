@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    
+
+    
+    <style>
+    body { margin:0; }
+    </style>
+<canvas onclick="showCoords(event)" id = "myCanvas" width = "400" height = "400" style = "border:1px solid #c3c3c3; cursor:none;">
+    
+    </canvas>
+    <img id="play" width="0" height="0" src="Play.png" alt="The ">
+
+    <img id="skypic" width="0" height="0" src="Sky.png" alt="The ">
+    
+    <img id="sword" width="0" height="0" src="Sword.png" alt="The ">
+    <img id="sword2" width="0" height="0" src="Sword2.png" alt="The ">
+    
+    <img id="info" width="0" height="0" src="Info.png" alt="The">
+    <img id="title" width="0" height="0" src="Title.png">
+    
+    
+
+    
+    
+<script>
+    
+
+document.title = "Fight Game"
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+setInterval(draw, 28);
+
+    
+var playbuttonx = 0
+var playbuttony = 10
+var playbuttonright = true
+var click = false
+var multiw = 1
+var multih = 1
+var multiw2 = 0
+
+var playwidth = 150
+var playheight = 75
+
+var infowidth = 150
+var infoheight = 75
+    
+   
+function showCoords(event) {
+  var x = event.clientX;
+  var y = event.clientY;
+ 
+    var x1 = (0.5 * canvas.width) - (75 + (25 * multiw)) - 20 
+    
+    
+    if (x > x1 && x < (x1 + 150 * multiw + 40 ) && y > 150 + (100 * multiw) && y <  150 + (100 * multiw) + 75 + (25 * multiw) ){
+        window.location.href = "Game.html"
+    }
+    if (x > x1 && x < (x1 + 150 * multiw + 40 ) && y > 250 + (150 * multiw) && y <  250 + (150 * multiw) + 75 + (25 * multiw) ){
+        window.location.href = "Info.html"
+    }
+  
+}
+    
+    function drawBall() {
+        
+        const canvas = document.getElementById('myCanvas')
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+  
+        multiw = canvas.width / 740
+        multih = canvas.height / 642
+        
+        document.title = "Arena Legends"
+        
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const sky = document.getElementById('skypic');
+        ctx.drawImage(sky,0,0,canvas.width, canvas.height);
+        
+        
+        const sword = document.getElementById('sword');
+        ctx.drawImage(sword,25 * multiw,(canvas.height / 2) - (146.25 + (48.75 * multiw)),60 + (20 * multiw), 292.5 + (97.5 * multiw));
+        
+        const sword2 = document.getElementById('sword2');
+        ctx.drawImage(sword2,canvas.width - (80 * multiw) - 25,(canvas.height / 2) - (146.25 + (48.75 * multiw)) ,60 + (20 * multiw), 292.5 + (97.5 * multiw));
+        
+        
+        
+        const title = document.getElementById('title');
+        ctx.drawImage(title,(0.5 * canvas.width) - (75 + (50 * multiw)),  (1 * multiw), 150 + (100 * multiw),150 + (100 * multiw));
+        
+        
+        
+        
+        
+        
+        
+        const play = document.getElementById('play');
+        ctx.drawImage(play,(0.5 * canvas.width) - (75 + (25 * multiw)) + playbuttonx - 20 ,150 + (100 * multiw), 150 + (50 * multiw),75 + (25 * multiw));
+        
+        const info = document.getElementById('info');
+        ctx.drawImage(info,(0.5 * canvas.width) - (75 + (25 * multiw)) - playbuttonx + 20, 250 + (150 * multiw), 150 + (50 * multiw),75 + (25 * multiw));
+        
+        
+        
+        
+        
+        
+        stroke(255, 255, 255);
+        noFill();
+        quad(mX-5, mY, mX, mY-5, mX+5, mY, mX, mY+5);
+        stroke(0, 0, 0);
+        if(!click){
+            fill(0, 0, 0, 0.2);
+        }
+        else{
+            fill(0, 0, 0, 0.8);
+        }
+        quad(mX-4, mY, mX, mY-4, mX+4, mY, mX, mY+4);
+}
+    
+function quad(x1, y1, x2, y2, x3, y3, x4, y4){
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.lineTo(x4, y4);
+    ctx.closePath();
+    color();
+}
+    function fill(r, g, b, a){
+        if(a === undefined){
+            a = 1;
+        }
+        ctx.fillStyle = "rgba("+r+", "+g+", "+b+", "+a+")";
+    }
+    function stroke(r, g, b, a){
+        if(a === undefined){
+            a = 1;
+        }
+        ctx.strokeStyle = "rgba("+r+", "+g+", "+b+", "+a+")";
+    }
+    
+    function noFill(){
+        ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    }
+    function noStroke(){
+        ctx.strokeStyle = "rgba(0, 0, 0, 0)";
+    }
+    function color(){
+        ctx.fill();
+        ctx.stroke();
+    }
+
+function draw() {
+    
+    if (playbuttonright){
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+        playbuttonx += 1;
+     
+        if (playbuttonx == 40){
+            playbuttonright = false;
+        }
+    }else{
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+        playbuttonx += -1;
+     
+        if (playbuttonx == 0){
+            playbuttonright = true;
+        }
+    } 
+}
+   
+canvas.onmousedown = function(e){
+    click = true;
+}
+canvas.onmouseup = function(e){  
+    click = false;
+}
+canvas.onmousemove = function(e){
+    mX = event.clientX;
+    mY = event.clientY;
+    
+}
+ 
+</script>
+
+</body>
+</html>

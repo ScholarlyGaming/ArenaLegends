@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    
+    <style>
+        
+    body { margin:0;
+        }
+    </style>
+<canvas onclick="showCoords(event)" id = "myCanvas" width = "400" height = "400" style = "border:1px solid #c3c3c3; cursor:none;">
+    
+    <p>smell</p>
+    </canvas>
+    <img id="howto" width="0" height="0" src="HowToPlay.png">
+
+    <img id="charstats" width="0" height="0" src="CharStats.png">
+    
+    <img id="sources" width="0" height="0" src="Sources.png">
+    
+    
+    <img id="back" width="0" height="0" src="Back.png">
+    
+    
+    <img id="skypic" width="0" height="0" src="Sky.png">
+    
+    <img id="sword" width="0" height="0" src="Sword.png">
+    <img id="sword2" width="0" height="0" src="Sword2.png">
+    
+    <img id="info" width="0" height="0" src="Info.png">
+    
+    <img id="right" width="0" height="0" src="Right.png">
+    
+    <img id="left" width="0" height="0" src="Left.png">
+    
+    
+    <img id="Card1" width="0" height="0" src="Card1.png">
+    <img id="Card2" width="0" height="0" src="Card2.png">
+    <img id="Card3" width="0" height="0" src="Card3.png">
+    <img id="Card4" width="0" height="0" src="Card4.png">
+    <img id="Card5" width="0" height="0" src="Card5.png">
+    <img id="Card6" width="0" height="0" src="Card6.png">
+    
+    
+    <img id="Play1" width="0" height="0" src="Play1.png">
+    <img id="Play2" width="0" height="0" src="Play2.png">
+    <img id="Play3" width="0" height="0" src="Play3.png">
+    
+<script>
+document.title = "Info Page"
+const canvas = document.getElementById('myCanvas');
+const ctx = canvas.getContext('2d');
+
+var playbuttonx = 0
+var click = false
+var playbuttonright = true
+var multiw = 1
+var multih = 1
+var displayedcard = 1
+var canvasoption = 1
+
+var displayedstep = 1
+    
+   
+function showCoords(event) {
+  var x = event.clientX;
+  var y = event.clientY;
+  
+    if (canvasoption == 1){
+
+        var y1 = (100 + (50 * multiw)) - 15
+
+        var x1 = (0.5 * canvas.width) - (175 * multiw)
+        var x2 = (0.5 * canvas.width) - (-25 * multiw)
+
+        var x3 = (0.5 * canvas.width) - (100 * multiw) - 15 
+
+
+        if (x > x1 && x < x1 + (150 * multiw) && y > y1 && y < y1 + (150 * multiw) + 30  ){
+            canvasoption = 2
+        }
+        if (x > x2 && x < x2 + (150 * multiw) && y > y1 && y < y1 + (150 * multiw) + 30  ){
+            canvasoption = 3
+        }
+
+        if (x > x3 && x < (x3 + 200 * multiw + 30 ) && y > (200 + (175 * multiw)) && y < (200 + (175 * multiw)) + (50 * multiw)  ){
+            window.location.href = "File.html"
+        }
+    }
+    
+    
+    if (canvasoption == 2){
+        var x3 = (0.5 * canvas.width) - (100 * multiw) - 15 
+        if (x > x3 && x < (x3 + 200 * multiw + 30 ) && y > (300 + (175 * multiw)) && y < (300 + (175 * multiw)) + (50 * multiw)  ){
+            canvasoption = 1
+        }
+        
+        if (displayedstep != 1 && x > 130 * multiw  && x < (230 * multiw) && y > (canvas.height / 2) - (33 * multiw) && y < (canvas.height / 2) - (33 * multiw) + (66 * multiw)){
+
+            
+            displayedstep += -1
+        }
+        
+        
+        if (displayedstep != 3 && x > canvas.width - (230 * multiw) && x < canvas.width - (230 * multiw) + (100 * multiw) && y > (canvas.height / 2) - (33 * multiw) && y < (canvas.height / 2) - (33 * multiw) + (66 * multiw)){
+
+            
+            displayedstep += 1
+        }
+    
+    }
+    
+    if (canvasoption == 3){
+        
+        var x3 = (0.5 * canvas.width) - (100 * multiw) - 15 
+        if (x > x3 && x < (x3 + 200 * multiw + 30 ) && y > (335 + (175 * multiw)) && y < (335 + (175 * multiw)) + (50 * multiw)){
+            canvasoption = 1
+        }
+        
+        
+     
+        
+        if (displayedcard != 1 && x > 130 * multiw  && x < (230 * multiw) && y > (canvas.height / 2) - (33 * multiw) && y < (canvas.height / 2) - (33 * multiw) + (66 * multiw)){
+
+            
+            displayedcard += -1
+        }
+        
+        
+        if (displayedcard != 6 && x > canvas.width - (230 * multiw) && x < canvas.width - (230 * multiw) + (100 * multiw) && y > (canvas.height / 2) - (33 * multiw) && y < (canvas.height / 2) - (33 * multiw) + (66 * multiw)){
+
+            
+            displayedcard += 1
+        }
+    
+    }
+  
+}
+    
+    function drawBall() {
+        
+        const canvas = document.getElementById('myCanvas')
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        multiw = canvas.width / 740
+        
+        multih = canvas.height / 642
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        
+        const sky = document.getElementById('skypic');
+        ctx.drawImage(sky,0,0,canvas.width, canvas.height);
+        
+        
+        const sword = document.getElementById('sword');
+        ctx.drawImage(sword,25 * multiw,(canvas.height / 2) - (146.25 + (48.75 * multiw)),60 + (20 * multiw), 292.5 + (97.5 * multiw));
+        
+        const sword2 = document.getElementById('sword2');
+        ctx.drawImage(sword2,canvas.width - (80 * multiw) - 25,(canvas.height / 2) - (146.25 + (48.75 * multiw)) ,60 + (20 * multiw), 292.5 + (97.5 * multiw));
+        
+        if (canvasoption == 1){
+
+            ctx.textAlign = "center"
+            ctx.font = (40 * multiw)+"px Arial Black";
+            ctx.fillStyle = '#000000';
+            ctx.fillText("Game Info", canvas.width * 0.5, 50 * multiw);
+
+            
+            
+            
+            
+            
+
+            const howto = document.getElementById('howto');
+            ctx.drawImage(howto,(0.5 * canvas.width) - (175 * multiw),(100 + (50 * multiw)) + playbuttonx - 15,150 * multiw, 150 * multiw);
+
+            const charstats = document.getElementById('charstats');
+            ctx.drawImage(charstats,(0.5 * canvas.width) - (-25 * multiw),(100 + (50 * multiw)) - playbuttonx + 15,150 * multiw, 150 * multiw);
+
+
+            const back = document.getElementById('back');
+            ctx.drawImage( back,(canvas.width * 0.5) - (100 * multiw) + playbuttonx - 15 ,(200 + (175 * multiw)),200 * multiw, 50 * multiw);
+
+            
+        
+        
+        }
+        if (canvasoption == 2){
+            ctx.textAlign = "center"
+            ctx.font = (36 * multiw)+"px Arial Black";
+            ctx.fillStyle = '#000000';
+            ctx.fillText("How To Play:", canvas.width * 0.5, 50 * multiw);
+            
+            ctx.font = (20 * multiw)+"px Arial Black";
+            ctx.fillStyle = '#000000';
+            ctx.fillText("Step " + displayedstep +"/3", canvas.width * 0.5, 80 * multiw);
+            
+            
+            const back = document.getElementById('back');
+            ctx.drawImage( back,(canvas.width * 0.5) - (100 * multiw) + playbuttonx - 15 ,(300 + (175 * multiw)),200 * multiw, 50 * multiw);
+            
+            if (displayedstep != 1){
+               const left = document.getElementById('left');
+                ctx.drawImage(left,130 * multiw,(canvas.height / 2) - (33 * multiw),100 * multiw, 66 * multiw); 
+            }
+            if (displayedstep != 3){
+                const right = document.getElementById('right');
+                ctx.drawImage(right,canvas.width - (230 * multiw),(canvas.height / 2) - (33 * multiw) ,100 * multiw, 66 * multiw);
+            }
+            
+            
+            
+            if (displayedstep == 1){
+
+                const Play1 = document.getElementById('Play1');
+                ctx.drawImage(Play1,(0.5 * canvas.width) - (75 + (37.5 * multiw)),(0.5 * canvas.height) - (75 + (37.5 * multiw)),150 + (75 * multiw), 150 + (75 * multiw));
+                
+                ctx.textAlign = "center"
+                ctx.font = (10 * multiw)+"px Arial Black";
+                ctx.fillStyle = '#000000';
+                ctx.fillText("Pick Your Characters by Dragging Them to the Blue Area", canvas.width * 0.5, 100 * multiw);
+                
+            }
+            
+            if (displayedstep == 2){
+
+                const Play2 = document.getElementById('Play2');
+                ctx.drawImage(Play2,(0.5 * canvas.width) - (75 + (37.5 * multiw)),(0.5 * canvas.height) - (75 + (37.5 * multiw)),150 + (75 * multiw), 150 + (75 * multiw));
+                ctx.textAlign = "center"
+                ctx.font = (10 * multiw)+"px Arial Black";
+                ctx.fillStyle = '#000000';
+                ctx.fillText("Move Them By Clicking Highlighted Boxes", canvas.width * 0.5, 100 * multiw);
+                
+            }
+            
+            if (displayedstep == 3){
+
+               const Play3 = document.getElementById('Play3');
+                ctx.drawImage(Play3,(0.5 * canvas.width) - (75 + (37.5 * multiw)),(0.5 * canvas.height) - (75 + (37.5 * multiw)),150 + (75 * multiw), 150 + (75 * multiw));
+                
+                ctx.textAlign = "center"
+                ctx.font = (10 * multiw)+"px Arial Black";
+                ctx.fillStyle = '#000000';
+                ctx.fillText("Attack Enemies That are Highlighted in Red", canvas.width * 0.5, 100 * multiw);
+            }
+            
+            
+        }
+        
+        
+        
+        if (canvasoption == 3){
+            
+            
+            
+            
+            
+            ctx.textAlign = "center"
+            ctx.font = (20 +(15 * multiw))+"px Arial Black";
+            ctx.fillStyle = '#000000';
+            ctx.fillText("Character Statistics:", canvas.width * 0.5, 20 + (14 * multiw));
+            
+            
+            ctx.font = (15 + (5 * multiw))+"px Arial Black";
+            ctx.fillStyle = '#000000';
+            ctx.fillText("Character " + displayedcard +"/6", canvas.width * 0.5, 45 + (22 * multiw));
+            
+            
+            
+        
+            
+            
+            
+            
+            
+            const back = document.getElementById('back');
+            ctx.drawImage( back,(canvas.width * 0.5) - (100 * multiw) + playbuttonx - 15 ,(335 + (175 * multiw)),200 * multiw, 50 * multiw);
+            
+            
+            if (displayedcard != 1){
+               const left = document.getElementById('left');
+                ctx.drawImage(left,130 * multiw,(canvas.height / 2) - (33 * multiw),100 * multiw, 66 * multiw); 
+            }
+            if (displayedcard != 6){
+                const right = document.getElementById('right');
+                ctx.drawImage(right,canvas.width - (230 * multiw),(canvas.height / 2) - (33 * multiw) ,100 * multiw, 66 * multiw);
+            }
+            //Cards Begin Here
+            if (displayedcard == 1){
+
+                const Card1 = document.getElementById('Card1');
+                ctx.drawImage(Card1,(0.5 * canvas.width) - (25 + (75 * multiw)),(0.5 * canvas.height) - (40 + (120 * multiw)),50 + (150 * multiw),80 + (240 * multiw));
+            }
+            
+            if (displayedcard == 2){
+
+                const Card2 = document.getElementById('Card2');
+                ctx.drawImage(Card2,(0.5 * canvas.width) - (25 + (75 * multiw)),(0.5 * canvas.height) - (40 + (120 * multiw)),50 + (150 * multiw),80 + (240 * multiw));
+            }
+            
+            if (displayedcard == 3){
+
+                const Card3 = document.getElementById('Card3');
+                ctx.drawImage(Card3,(0.5 * canvas.width) - (25 + (75 * multiw)),(0.5 * canvas.height) - (40 + (120 * multiw)),50 + (150 * multiw),80 + (240 * multiw));
+            }
+            if (displayedcard == 4){
+
+                const Card4 = document.getElementById('Card4');
+                ctx.drawImage(Card4,(0.5 * canvas.width) - (25 + (75 * multiw)),(0.5 * canvas.height) - (40 + (120 * multiw)),50 + (150 * multiw),80 + (240 * multiw));
+            }
+            
+            if (displayedcard == 5){
+
+                const Card5 = document.getElementById('Card5');
+                ctx.drawImage(Card5,(0.5 * canvas.width) - (25 + (75 * multiw)),(0.5 * canvas.height) - (40 + (120 * multiw)),50 + (150 * multiw),80 + (240 * multiw));
+            }
+            
+            if (displayedcard == 6){
+
+                const Card6 = document.getElementById('Card6');
+                ctx.drawImage(Card6,(0.5 * canvas.width) - (25 + (75 * multiw)),(0.5 * canvas.height) - (40 + (120 * multiw)),50 + (150 * multiw),80 + (240 * multiw));
+            }
+            
+            
+            
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        stroke(255, 255, 255);
+        noFill();
+        quad(mX-5, mY, mX, mY-5, mX+5, mY, mX, mY+5);
+        stroke(0, 0, 0);
+        if(!click){
+            fill(0, 0, 0, 0.2);
+        }
+        else{
+            fill(0, 0, 0, 0.8);
+        }
+        quad(mX-4, mY, mX, mY-4, mX+4, mY, mX, mY+4);
+        
+        
+       
+}
+    
+    function quad(x1, y1, x2, y2, x3, y3, x4, y4){
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.lineTo(x3, y3);
+    ctx.lineTo(x4, y4);
+    ctx.closePath();
+    color();
+}
+    function fill(r, g, b, a){
+        if(a === undefined){
+            a = 1;
+        }
+        ctx.fillStyle = "rgba("+r+", "+g+", "+b+", "+a+")";
+    }
+    function stroke(r, g, b, a){
+        if(a === undefined){
+            a = 1;
+        }
+        ctx.strokeStyle = "rgba("+r+", "+g+", "+b+", "+a+")";
+    }
+    
+    function noFill(){
+        ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    }
+    function noStroke(){
+        ctx.strokeStyle = "rgba(0, 0, 0, 0)";
+    }
+    function color(){
+        ctx.fill();
+        ctx.stroke();
+    }
+function draw() {
+    
+    if (playbuttonright){
+       ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+        playbuttonx += 1;
+     
+        if (playbuttonx == 30){
+            playbuttonright = false;
+        }
+    }else{
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBall();
+        playbuttonx += -1;
+     
+        if (playbuttonx == 0){
+            playbuttonright = true;
+        }
+    
+    }
+    
+   
+
+}
+
+setInterval(draw, 30);
+
+    
+canvas.onmousedown = function(e){
+    click = true;
+}
+canvas.onmouseup = function(e){  
+    click = false;
+}
+canvas.onmousemove = function(e){
+    mX = event.clientX;
+    mY = event.clientY;
+}
+ 
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <audio id="myAudio">
+  
+  <source src="Combined.mp3" type="audio/mp3" >
+  Your browser does not support the audio element.
+</audio>
+    
+    
+    <audio id="HitSound">
+  
+  <source src="HitSound.wav" type="audio/mp3" >
+  Your browser does not support the audio element.
+</audio>
+    
+    <style>
+        body{
+            margin: 0;
+            background-color:#00003F
+        }
+        .myCanvas{
+            
+            margin-bottom: : 0;
+            border: 5px solid red;
+        }
+            
+            
+        
+    </style>
+    
+    
+    <canvas id="myCanvas" width="700" height="700"
+            style="cursor:none; border: 5px solid red;">
+    
+    
+        Your browser does not support the canvas element. RIP.
+
+        I will, however, provide you with humor in an alternative method.
+    
+        "And then I said, 'That's not a camel, that's my wife!'"
+        </canvas>
+    
+
+    
+    
+<img id="alex" width="0" height="0" src="Alex.png">
+<img id="cole" width="0" height="0" src="Cole.png"> 
+<img id="hearth" width="0" height="0" src="Hearth.png"> 
+<img id="kayla" width="0" height="0" src="Kayla.png"> 
+<img id="max" width="0" height="0" src="Max.png"> 
+<img id="rex" width="0" height="0" src="Rex.png"> 
+<img id="background" width="0" height="0" src="Background.png"> 
+    
+
+<script>
+    //c.clearRect(0, 0, canvas.width, canvas.height);
+    var canvas = document.getElementById("myCanvas");
+    canvas.verticalAlign = "middle"
+    var c = canvas.getContext("2d");
+    var width = canvas.width;
+    var height = canvas.height;
+    
+    document.title = "Arena Lengends"
+    
+    var x = document.getElementById("myAudio"); 
+    x.loop = true;
+    x.volume = 0.2;
+    x.play();
+    
+    var click = false;
+    var release = false;
+    var mX = 0;
+    var mY = 0;
+    var sX = 0;
+    var sY = 0;
+    //c.fillRect(0,0,150,75);
+    var fillC = "";
+    var strokeC = "";
+    var frame = 0;
+    var turn = 0;
+    var bCs = [];
+    var rCs = [];
+    var selected = ["Rex", "Cole", "Hearth", "Alex", "Kayla", "Max"];
+    var used = [false, false, false, false, false, false];
+    var tilemaps = [[
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [2, 2, 0, 0, 0, 2, 2],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+    ],[
+        [2, 0, 0, 0, 0, 0, 2],
+        [2, 0, 0, 0, 0, 0, 2],
+        [2, 2, 0, 0, 0, 2, 2],
+        [2, 2, 0, 0, 0, 2, 2],
+        [2, 2, 0, 0, 0, 2, 2],
+        [2, 0, 0, 0, 0, 0, 2],
+        [2, 0, 0, 0, 0, 0, 2],
+    ],[
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 2, 0, 0, 0],
+        [0, 0, 2, 3, 2, 0, 0],
+        [0, 0, 0, 2, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+    ],[
+        [0, 0, 0, 2, 2, 2, 2],
+        [0, 0, 0, 0, 2, 2, 2],
+        [2, 0, 0, 0, 0, 2, 2],
+        [2, 0, 0, 0, 0, 0, 2],
+        [2, 2, 0, 0, 0, 0, 2],
+        [2, 2, 2, 0, 0, 0, 0],
+        [2, 2, 2, 2, 0, 0, 0],
+    ],[
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 2, 0, 2, 0, 0],
+        [0, 2, 0, 0, 0, 2, 0],
+        [0, 0, 2, 0, 2, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+    ],[
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 3, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 3, 0, 0, 0, 3, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 3, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0],
+    ],[
+        [0, 0, 2, 3, 2, 0, 0],
+        [0, 0, 0, 2, 0, 0, 0],
+        [2, 0, 0, 0, 0, 0, 2],
+        [3, 2, 0, 0, 0, 2, 3],
+        [2, 0, 0, 0, 0, 0, 2],
+        [0, 0, 0, 2, 0, 0, 0],
+        [0, 0, 2, 3, 2, 0, 0],
+    ],[
+        [2, 2, 0, 0, 0, 0, 0],
+        [2, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 3, 0, 0],
+        [0, 0, 0, 3, 0, 0, 0],
+        [0, 0, 3, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 2],
+        [0, 0, 0, 0, 0, 2, 2],
+    ]];
+    var tilemap = tilemaps[Math.floor(tilemaps.length*Math.random())];
+    //var tilemap = tilemaps[tilemaps.length-1];
+    var charS = 0;
+    var turnP = 0;
+    var frameP = 0;
+    var frameAI = 0;
+    var AIturn = false;
+    var placed = 0;
+    var AI = true;
+    var risk = 0.25+(Math.random()/2);
+    var shake = 0;
+    var fade = 0;
+    var dmgFade = [];
+    var dmgTx = [];
+    var dmgTy = [];
+    var dmgDmg = [];
+    c.save();
+    function draw(){
+        frame++;
+        if(frameP > 0){
+            frameP--;
+        }
+        else if(bCs.length == 0 && turn > 0 && shake < 1){
+            fill(200, 200, 200, fade);
+            stroke(0, 0, 0);
+            fade += 0.01;
+            rRect(200, 250, 300, 200, 10);
+            fill(0, 0, 0, fade);
+            fontSize(48);
+            textAlign('center');
+            text("You lose!", 350, 334);
+            fill(240, 240, 240, fade);
+            if(mX > 300 && mX < 400 && mY > 370 && mY < 420){
+                fill(230, 230, 230, fade);
+                if(click){
+                    //Go somewhere or do something.
+                    window.location.href = "File.html"
+                }
+            }
+            rect(300, 370, 100, 50);
+            fill(0, 0, 0, fade);
+            fontSize(12);
+            text("Main Menu", 350, 400);
+            //Custom cursor
+            stroke(255, 255, 255);
+            noFill();
+            quad(mX-5, mY, mX, mY-5, mX+5, mY, mX, mY+5);
+            stroke(0, 0, 0);
+            if(!click){
+                fill(0, 0, 0, 0.2);
+            }
+            else{
+                fill(0, 0, 0, 0.8);
+            }
+            quad(mX-4, mY, mX, mY-4, mX+4, mY, mX, mY+4);
+            if(click && dist(sX, sY, mX, mY) > 10){
+                stroke(0, 0, 0, constrain((dist(sX, sY, mX, mY)/200)-0.05, 0, 0.2));
+                line(sX, sY, mX, mY);
+                noFill();
+                quad(sX-1, sY, sX, sY-1, sX+1, sY, sX, sY+1);
+            }
+        }
+        else if(rCs.length == 0 && turn > 0 && shake < 1){
+            fill(200, 200, 200, fade);
+            stroke(0, 0, 0)
+            fade += 0.01;
+            rRect(200, 250, 300, 200, 10);
+            fill(0, 0, 0, fade);
+            fontSize(48);
+            textAlign('center');
+            text("You win!", 350, 334);
+            fill(240, 240, 240, fade);
+            if(mX > 300 && mX < 400 && mY > 370 && mY < 420){
+                fill(230, 230, 230, fade);
+                if(click){
+                    //Go somewhere or do something.
+                    window.location.href = "File.html"
+                }
+            }
+            rect(300, 370, 100, 50);
+            fill(0, 0, 0, fade);
+            fontSize(12);
+            text("Main Menu", 350, 400);
+            //Custom cursor
+            stroke(255, 255, 255);
+            noFill();
+            quad(mX-5, mY, mX, mY-5, mX+5, mY, mX, mY+5);
+            stroke(0, 0, 0);
+            if(!click){
+                fill(0, 0, 0, 0.2);
+            }
+            else{
+                fill(0, 0, 0, 0.8);
+            }
+            quad(mX-4, mY, mX, mY-4, mX+4, mY, mX, mY+4);
+            if(click && dist(sX, sY, mX, mY) > 10){
+                stroke(0, 0, 0, constrain((dist(sX, sY, mX, mY)/200)-0.05, 0, 0.2));
+                line(sX, sY, mX, mY);
+                noFill();
+                quad(sX-1, sY, sX, sY-1, sX+1, sY, sX, sY+1);
+            }
+        }
+        else{
+            if (shake >= 13){
+                var y = document.getElementById("HitSound"); 
+                y.play();
+            
+            }
+            c.save();
+            c.translate(shake*Math.sin(frame), shake*Math.cos(frame));
+        const background = document.getElementById('background');
+        c.drawImage(background, 0,0,700,700);
+        fill(0, 0, 63);
+        fill(10, 10, 10);
+        stroke(10, 10, 10, 0.5);
+        strokeWeight(5);
+        quad(0, 600, 50, 580, 50, 700, 0, 700);
+        quad(50, 580, 100, 600, 100, 700, 50, 700);
+        quad(600, 600, 650, 580, 650, 700, 600, 700);
+        quad(650, 580, 700, 600, 700, 700, 650, 700);
+        //Tank for weird fill stuff
+        quad(800, 800, 800, 801, 801, 801, 801, 800);
+        noStroke();
+        fill(255, 255, 155+50*Math.sin(frame/18));
+        
+        strokeWeight(1.5);
+        fill(240, 240, 240);
+        stroke(190, 190, 190);
+        quad(70, 340, 350, 200, 630, 340, 350, 480);
+        fill(230, 230, 230);
+        quad(70, 340, 350, 480, 350, 700, 70, 700);
+        quad(630, 340, 350, 480, 350, 700, 630, 700);
+        stroke(210, 210, 210);
+        var i = 1;
+        while(i < 7){
+            line(70+40*i, 340-20*i, 350+40*i, 480-20*i);
+            line(630-40*i, 340-20*i, 350-40*i, 480-20*i);
+            i++;
+        }
+        stroke(210, 210, 210);
+        var i = 1;
+        while(i < 7){
+            line(70+40*i, 340-20*i, 350+40*i, 480-20*i);
+            line(630-40*i, 340-20*i, 350-40*i, 480-20*i);
+            i++;
+        }
+        //stroke(210, 210, 210);
+        var i = 1;
+        while(i < 7){
+            line(70+40*i, 340+20*i, 70+40*i, 700);
+            line(630-40*i, 340+20*i, 630-40*i, 700);
+            i++;
+        }
+        var i = 0;
+        while(i < bCs.length){
+            if(bCs[i][1] <= 0){
+                tilemap[bCs[i][8]][bCs[i][9]] = 0;
+                bCs.splice(i, 1);
+                i--;
+            }
+            i++;
+        }
+        var i = 0;
+        while(i < rCs.length){
+            if(rCs[i][1] <= 0){
+                tilemap[rCs[i][8]][rCs[i][9]] = 0;
+                rCs.splice(i, 1);
+                i--;
+            }
+            i++;
+        }
+        if(turn == 0){
+            stroke(0, 0, 255, 0.8);
+            fill(0, 0, 255, 0.05);
+            quad(70, 340, 350, 480, 430, 440, 150, 300);
+            stroke(255, 0, 0, 0.8);
+            fill(255, 0, 0, 0.05);
+            quad(270, 240, 550, 380, 630, 340, 350, 200);
+            fill(255, 255, 255);
+            stroke(0, 0, 255);
+            var i = 0;
+            var end = true;
+            while(i < 6){
+                fill(255, 255, 255, 1)
+                if((mX > (75+100*i) && mX < (125+100*i) && mY > 550 && mY < 600) || (sX > 75+100*i && sX < 125+100*i && sY > 550 && sY < 600 && (click || release))){
+                    fill(240, 240, 240);
+                    var tile = tileOver();
+                    if(!used[i] && release && tile[0] >= 0 && tile[0] <= 1 && tile[1] >= 0 && tile[1] <= 6){
+                        if(tilemap[tile[0]][tile[1]] == 0){
+                            tilemap[tile[0]][tile[1]] = 1;
+                            bCs.push(charInit(selected[i], tile[0], tile[1]));
+                            placed++;
+                            used[i] = true;
+                        }
+                    }
+                }
+                if(used[i]){
+                    fill(200, 200, 200);
+                }
+                rRect(75+100*i, 550, 50, 50, 2);
+                if(!used[i]){
+                    char(100+100*i, 582, selected[i]);
+                }
+                stroke(0, 0, 255);
+                i++;
+            }
+            if(placed == 3){
+                turn = 1;
+                used = [false, false, false];
+                charS = 0;
+                rInit(3);
+            }
+            fill(255, 255, 255);
+            stroke(0, 0, 0, 0.4);
+            rRect(200, 650, 300, 100, 10);
+            fill(0, 0, 0);
+            fontSize(15);
+            textAlign('center');
+            text("Drag your characters to their spots.", 350, 682);
+        }
+        else if(!AIturn){
+            var tile = tileSOver();
+            var i = 0;
+            while(i < bCs.length){
+                if(used[i] == true){
+                    tileF(bCs[i][8], bCs[i][9]);
+                }
+                else if(click && tile[0] == bCs[i][8] && tile[1] == bCs[i][9] && turnP == 0){
+                    charS = i;
+                }
+                i++;
+            }
+            var i = 0;
+            var end = true;
+            while(i < bCs.length){
+                if(used[i] == false){
+                    end = false;
+                }
+                i++;
+            }
+            while(used[charS] == true && !end){
+                charS++;
+                if(charS == bCs.length){
+                    charS = 0;
+                }
+            }
+            if(charS < bCs.length){
+                //Move turn
+                if(turnP == 0){
+                    var available = [[bCs[charS][8], bCs[charS][9]]];
+                    var n = [];
+                    var i = 0;
+                    while(i < bCs[charS][6]){
+                        n.push([bCs[charS][8], bCs[charS][9]]);
+                        available = n;
+                        n = [];
+                        var j = 0;
+                        while(j < available.length){
+                            var x = available[j][0];
+                            var y = available[j][1];
+                            if(x-1 >= 0){
+                                if(tilemap[x-1][y] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x-1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x-1, y]);
+                                    }
+                                }
+                            }
+                            if(x+1 <= 6){
+                                if(tilemap[x+1][y] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x+1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x+1, y]);
+                                    }
+                                }
+                            }
+                            if(y-1 >= 0){
+                                if(tilemap[x][y-1] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y-1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y-1]);
+                                    }
+                                }
+                            }
+                            if(y+1 <= 6){
+                                if(tilemap[x][y+1] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y+1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y+1]);
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                        i++;
+                    }
+                    n.push([bCs[charS][8], bCs[charS][9]]);
+                    var i = 0;
+                    fill(0, 0, 255, 0.1);
+                    while(i < n.length){
+                        tileF(n[i][0], n[i][1]);
+                        var tile = tileOver();
+                        if(tile[0] == n[i][0] && tile[1] == n[i][1] && release){
+                            tilemap[bCs[charS][8]][bCs[charS][9]] = 0;
+                            bCs[charS][8] = n[i][0];
+                            bCs[charS][9] = n[i][1];
+                            tilemap[bCs[charS][8]][bCs[charS][9]] = 1;
+                            turnP = 1;
+                        }
+                        i++;
+                    }
+                }
+                //Attack turn
+                if(turnP == 1){
+                    var available = [[bCs[charS][8], bCs[charS][9]]];
+                    var n = [];
+                    var i = 0;
+                    while(i < bCs[charS][5]){
+                        n.push([bCs[charS][8], bCs[charS][9]]);
+                        available = n;
+                        n = [];
+                        var j = 0;
+                        while(j < available.length){
+                            var x = available[j][0];
+                            var y = available[j][1];
+                            if(x-1 >= 0){
+                                if(tilemap[x-1][y] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x-1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x-1, y]);
+                                    }
+                                }
+                            }
+                            if(x+1 <= 6){
+                                if(tilemap[x+1][y] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x+1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x+1, y]);
+                                    }
+                                }
+                            }
+                            if(y-1 >= 0){
+                                if(tilemap[x][y-1] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y-1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y-1]);
+                                    }
+                                }
+                            }
+                            if(y+1 <= 6){
+                                if(tilemap[x][y+1] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y+1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y+1]);
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                        i++;
+                    }
+                    n.push([bCs[charS][8], bCs[charS][9]]);
+                    var i = 0;
+                    while(i < n.length){
+                        fill(255, 0, 0, 0.05);
+                        tileF(n[i][0], n[i][1]);
+                        var j = 0;
+                        var inE = false;
+                        while(j < rCs.length){
+                            if(rCs[j][8] == n[i][0] && rCs[j][9] == n[i][1]){
+                                inE = true;
+                            }
+                            j++;
+                        }
+                        if(!inE){
+                           n.splice(i, 1);
+                           i--;
+                        }
+                        i++;
+                    }
+                    var i = 0;
+                    rect(800, 800, 20, 20);
+                    fill(255, 0, 0, 0.4);
+                    rect(800, 800, 20, 20);
+                    while(i < n.length){
+                        fill(255, 0, 0, 0.4);
+                        tileF(n[i][0], n[i][1]);
+                        var tile = tileOver();
+                        if(tile[0] == n[i][0] && tile[1] == n[i][1] && release){
+                            var j = 0;
+                            var atk = bCs[charS][3]+Math.floor((bCs[charS][4]-bCs[charS][3])*Math.random());
+                            while(j < rCs.length){
+                                if(rCs[j][8] == n[i][0] && rCs[j][9] == n[i][1]){
+                                    rCs[j][1] -= atk;
+                                    dmgFade.push(20);
+                                    dmgTx.push(rCs[j][8]);
+                                    dmgTy.push(rCs[j][9]);
+                                    dmgDmg.push(atk);
+                                    if(bCs[charS][7] == "Poison"){
+                                        var r = Math.random();
+                                        if(r < 0.6){
+                                            rCs[j][10].push(["Poison", 2]);
+                                        }
+                                    }
+                                }
+                                else if(bCs[charS][7] == "Multi"){
+                                    if(Math.abs(rCs[j][8]-n[i][0])+Math.abs(rCs[j][9]-n[i][1]) <= 1){
+                                        rCs[j][1] -= Math.ceil(2*atk/3);
+                                        dmgFade.push(20);
+                                        dmgTx.push(rCs[j][8]);
+                                        dmgTy.push(rCs[j][9]);
+                                        dmgDmg.push(Math.ceil(2*atk/3));
+                                    }
+                                    else if(Math.abs(rCs[j][8]-n[i][0])+Math.abs(rCs[j][9]-n[i][1]) <= 2){
+                                        rCs[j][1] -= Math.ceil(atk/3);
+                                        dmgFade.push(20);
+                                        dmgTx.push(rCs[j][8]);
+                                        dmgTy.push(rCs[j][9]);
+                                        dmgDmg.push(Math.ceil(atk/3));
+                                    }
+                                }
+                                j++;
+                            }
+                            var cP = tileC(bCs[charS][8], bCs[charS][9]);
+                            var cE = tileC(n[i][0], n[i][1]);
+                            stroke(0, 0, 255);
+                            strokeWeight(3);
+                            line(cP[0], cP[1], cE[0], cE[1]);
+                            strokeWeight(1.5);
+                            noStroke();
+                            frameP = 15;
+                            shake = 15;
+                            
+                            turnP = 0;
+                            used[charS] = true;
+                            charS++;
+                        }
+                        i++;
+                    }
+                    if(n.length == 0){
+                        turnP = 0;
+                        used[charS] = true;
+                        charS++;
+                    }
+                }
+            }
+            else if(charS == bCs.length){
+                charS = 0;
+            }
+            var i = 0;
+            var end = true;
+            while(i < bCs.length){
+                if(used[i] == false){
+                    end = false;
+                }
+                i++;
+            }
+            if(end){
+                var i = 0;
+                while(i < bCs.length){
+                    var j = 0;
+                    while(j < bCs[i][10].length){
+                        if(bCs[i][10][j][0] == "Poison" && bCs[i][10][j][1] > 0){
+                            var dmg = 6+Math.floor(5*Math.random());
+                            bCs[i][1] -= dmg;
+                            bCs[i][10][j][1]--;
+                            dmgFade.push(20);
+                            dmgTx.push(bCs[i][8]);
+                            dmgTy.push(bCs[i][9]);
+                            dmgDmg.push(dmg);
+                        }
+                        j++;
+                    }
+                    if(bCs[i][7] == "Heal"){
+                        var trgt = Math.floor(bCs.length*Math.random());
+                        bCs[trgt][1] = constrain(bCs[trgt][1]+10, 0, bCs[trgt][2]);
+                    }
+                    i++;
+                }
+                AIturn = true;
+                used = [false, false, false];
+                charS = 0;
+            }
+            fill(255, 255, 255);
+            stroke(0, 0, 0, 0.4);
+            rRect(200, 650, 300, 100, 10);
+            fill(0, 0, 0);
+            fontSize(15);
+            textAlign('center');
+            if(turnP == 0 && charS < bCs.length){
+                text("Turn B"+turn+": "+bCs[charS][0]+"-Move", 350, 682);
+            }
+            else if(charS < bCs.length){
+                text("Turn B"+turn+": "+bCs[charS][0]+"-Attack", 350, 682);
+            }
+        }
+        else{
+            if(!AI){
+                var tile = tileSOver();
+                var i = 0;
+                while(i < rCs.length){
+                    if(used[i] == true){
+                        tileF(rCs[i][8], rCs[i][9]);
+                    }
+                    else if(click && tile[0] == rCs[i][8] && tile[1] == rCs[i][9] && turnP == 0){
+                        charS = i;
+                    }
+                    i++;
+                }
+                var i = 0;
+                var end = true;
+                while(i < rCs.length){
+                    if(used[i] == false){
+                        end = false;
+                    }
+                    i++;
+                }
+                while(used[charS] == true && !end){
+                    charS++;
+                    if(charS == rCs.length){
+                        charS = 0;
+                    }
+                }
+            }
+            if(charS < rCs.length){
+                //Move turn
+                if(turnP == 0){
+                    var available = [[rCs[charS][8], rCs[charS][9]]];
+                    var n = [];
+                    var i = 0;
+                    while(i < rCs[charS][6]){
+                        n.push([rCs[charS][8], rCs[charS][9]]);
+                        available = n;
+                        n = [];
+                        var j = 0;
+                        while(j < available.length){
+                            var x = available[j][0];
+                            var y = available[j][1];
+                            if(x-1 >= 0){
+                                if(tilemap[x-1][y] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x-1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x-1, y]);
+                                    }
+                                }
+                            }
+                            if(x+1 <= 6){
+                                if(tilemap[x+1][y] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x+1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x+1, y]);
+                                    }
+                                }
+                            }
+                            if(y-1 >= 0){
+                                if(tilemap[x][y-1] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y-1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y-1]);
+                                    }
+                                }
+                            }
+                            if(y+1 <= 6){
+                                if(tilemap[x][y+1] == 0){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y+1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y+1]);
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                        i++;
+                    }
+                    n.push([rCs[charS][8], rCs[charS][9]]);
+                    var i = 0;
+                    fill(0, 0, 255, 0.1);
+                    if(!AI){
+                        while(i < n.length){
+                            tileF(n[i][0], n[i][1]);
+                            var tile = tileOver();
+                            if(tile[0] == n[i][0] && tile[1] == n[i][1] && release){
+                                tilemap[rCs[charS][8]][rCs[charS][9]] = 0;
+                                rCs[charS][8] = n[i][0];
+                                rCs[charS][9] = n[i][1];
+                                tilemap[rCs[charS][8]][rCs[charS][9]] = 1;
+                                turnP = 1;
+                            }
+                            i++;
+                        }
+                    }
+                    else{
+                        if(frameAI > 0){
+                            frameAI--;
+                        }
+                        else{
+                            frameAI = 30;
+                            var score = -1000;
+                            var best = 0;
+                            var i = 0;
+                            while(i < n.length){
+                                var j = 0;
+                                var ts = 10;
+                                while(j < bCs.length){
+                                    var dst = Math.abs(n[i][0] - bCs[j][8]) + Math.abs(n[i][1] - bCs[j][9]);
+                                    if(dst > bCs[j][5] && dst <= rCs[charS][5]){
+                                        ts += 4;
+                                    }
+                                    else if(dst <= bCs[j][5] && dst <= rCs[charS][5]){
+                                        if(risk < (1-(rCs[charS][1]/rCs[charS][2]))*rCs.length){
+                                            ts -= 2;
+                                        }
+                                        else{
+                                            ts += 2;
+                                        }
+                                    }
+                                    else if(dst <= bCs[j][5] && dst <= rCs[charS][5]){
+                                        ts -= 1;
+                                    }
+                                    else{
+                                        ts -= 4;
+                                    }
+                                    j++;
+                                }
+                                if(ts > score){
+                                    score = ts;
+                                    best = i;
+                                }
+                                i++;
+                            }
+                            tilemap[rCs[charS][8]][rCs[charS][9]] = 0;
+                            rCs[charS][8] = n[best][0];
+                            rCs[charS][9] = n[best][1];
+                            tilemap[rCs[charS][8]][rCs[charS][9]] = 1;
+                            turnP = 1;
+                            frameAI = 30;
+                        }
+                    }
+                }
+                //Attack turn
+                if(turnP == 1){
+                    var available = [[rCs[charS][8], rCs[charS][9]]];
+                    var n = [];
+                    var i = 0;
+                    while(i < rCs[charS][5]){
+                        n.push([rCs[charS][8], rCs[charS][9]]);
+                        available = n;
+                        n = [];
+                        var j = 0;
+                        while(j < available.length){
+                            var x = available[j][0];
+                            var y = available[j][1];
+                            if(x-1 >= 0){
+                                if(tilemap[x-1][y] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x-1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x-1, y]);
+                                    }
+                                }
+                            }
+                            if(x+1 <= 6){
+                                if(tilemap[x+1][y] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x+1 && n[k][1] == y){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x+1, y]);
+                                    }
+                                }
+                            }
+                            if(y-1 >= 0){
+                                if(tilemap[x][y-1] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y-1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y-1]);
+                                    }
+                                }
+                            }
+                            if(y+1 <= 6){
+                                if(tilemap[x][y+1] <= 2){
+                                    var k = 0;
+                                    var add = true;
+                                    while(k < n.length){
+                                        if(n[k][0] == x && n[k][1] == y+1){
+                                            add = false;
+                                        }
+                                        k++;
+                                    }
+                                    if(add){
+                                        n.push([x, y+1]);
+                                    }
+                                }
+                            }
+                            j++;
+                        }
+                        i++;
+                    }
+                    n.push([rCs[charS][8], rCs[charS][9]]);
+                    var i = 0;
+                    while(i < n.length){
+                        fill(255, 0, 0, 0.05);
+                        tileF(n[i][0], n[i][1]);
+                        var j = 0;
+                        var inE = false;
+                        while(j < bCs.length){
+                            if(bCs[j][8] == n[i][0] && bCs[j][9] == n[i][1]){
+                                inE = true;
+                            }
+                            j++;
+                        }
+                        if(!inE){
+                           n.splice(i, 1);
+                           i--;
+                        }
+                        i++;
+                    }
+                    rect(800, 800, 20, 20);
+                    var i = 0;
+                    if(!AI){
+                        fill(255, 0, 0, 0.4);
+                        while(i < n.length){
+                            fill(255, 0, 0, 0.4);
+                            tileF(n[i][0], n[i][1]);
+                            var tile = tileOver();
+                            if(tile[0] == n[i][0] && tile[1] == n[i][1] && release){
+                                var j = 0;
+                                var atk = rCs[charS][3]+Math.floor((rCs[charS][4]-rCs[charS][3])*Math.random());
+                                while(j < bCs.length){
+                                    if(bCs[j][8] == n[i][0] && bCs[j][9] == n[i][1]){
+                                        bCs[j][1] -= atk;
+                                        dmgFade.push(20);
+                                        dmgTx.push(bCs[j][8]);
+                                        dmgTy.push(bCs[j][9]);
+                                        dmgDmg.push(atk);
+                                        if(rCs[charS][7] == "Poison"){
+                                            var r = Math.random();
+                                            if(r < 0.6){
+                                                bCs[j][10].push(["Poison", 2]);
+                                            }
+                                        }
+                                    }
+                                    else if(rCs[charS][7] == "Multi"){
+                                        if(Math.abs(bCs[j][8]-n[i][0])+Math.abs(bCs[j][9]-n[i][1]) <= 1){
+                                            bCs[j][1] -= Math.ceil(2*atk/3);
+                                            dmgFade.push(20);
+                                            dmgTx.push(bCs[j][8]);
+                                            dmgTy.push(bCs[j][9]);
+                                            dmgDmg.push(Math.ceil(2*atk/3));
+                                        }
+                                        else if(Math.abs(bCs[j][8]-n[i][0])+Math.abs(bCs[j][9]-n[i][1]) <= 2){
+                                            bCs[j][1] -= Math.ceil(atk/3);
+                                            dmgFade.push(20);
+                                            dmgTx.push(bCs[j][8]);
+                                            dmgTy.push(bCs[j][9]);
+                                            dmgDmg.push(Math.ceil(atk/3));
+                                        }
+                                    }
+                                    j++;
+                                }
+                                var cP = tileC(rCs[charS][8], rCs[charS][9]);
+                                var cE = tileC(n[i][0], n[i][1]);
+                                stroke(255, 0, 0);
+                                strokeWeight(3);
+                                line(cP[0], cP[1], cE[0], cE[1]);
+                                strokeWeight(1.5);
+                                noStroke();
+                                frameP = 15;
+                                shake = 15;
+                                
+                                turnP = 0;
+                                used[charS] = true;
+                                charS++;
+                            }
+                            i++;
+                        }
+                    }
+                    else{
+                        if(frameAI > 0){
+                            fill(255, 0, 0, 0.4);
+                            fill(255, 0, 0, 0.4);
+                            var i = 0;
+                            while(i < n.length){
+                                tileF(n[i][0], n[i][1]);
+                                i++;
+                            }
+                            frameAI--;
+                        }
+                        else{
+                            fill(255, 0, 0, 0.4);
+                            var i = 0;
+                            var select = 0;
+                            var hp = 100000;
+                            while(i < n.length){
+                                var j = 0;
+                                while(j < bCs.length){
+                                    if(bCs[j][8] == n[i][0] && bCs[j][9] == n[i][1]){
+                                        if(bCs[j][1] < hp){
+                                            hp = bCs[j][1];
+                                            select = i;
+                                        }
+                                    }
+                                    j++;
+                                }
+                                i++;
+                            }
+                            fill(255, 0, 0, 0.4);
+                            var i = 0;
+                            while(i < n.length){
+                                tileF(n[i][0], n[i][1]);
+                                var tile = tileOver();
+                                if(i == select){
+                                    var j = 0;
+                                    var atk = rCs[charS][3]+Math.floor((rCs[charS][4]-rCs[charS][3])*Math.random());
+                                    while(j < bCs.length){
+                                        if(bCs[j][8] == n[i][0] && bCs[j][9] == n[i][1]){
+                                            bCs[j][1] -= atk;
+                                            dmgFade.push(20);
+                                            dmgTx.push(bCs[j][8]);
+                                            dmgTy.push(bCs[j][9]);
+                                            dmgDmg.push(atk);
+                                            if(rCs[charS][7] == "Poison"){
+                                                var r = Math.random();
+                                                if(r < 0.6){
+                                                    bCs[j][10].push(["Poison", 2]);
+                                                }
+                                            }
+                                        }
+                                        else if(rCs[charS][7] == "Multi"){
+                                            if(Math.abs(bCs[j][8]-n[i][0])+Math.abs(bCs[j][9]-n[i][1]) <= 1){
+                                                bCs[j][1] -= Math.ceil(2*atk/3);
+                                                dmgFade.push(20);
+                                                dmgTx.push(bCs[j][8]);
+                                                dmgTy.push(bCs[j][9]);
+                                                dmgDmg.push(Math.ceil(2*atk/3));
+                                            }
+                                            else if(Math.abs(bCs[j][8]-n[i][0])+Math.abs(bCs[j][9]-n[i][1]) <= 2){
+                                                bCs[j][1] -= Math.ceil(atk/3);
+                                                dmgFade.push(20);
+                                                dmgTx.push(bCs[j][8]);
+                                                dmgTy.push(bCs[j][9]);
+                                                dmgDmg.push(Math.ceil(atk/3));
+                                            }
+                                        }
+                                        j++;
+                                    }
+                                    var cP = tileC(rCs[charS][8], rCs[charS][9]);
+                                    var cE = tileC(n[i][0], n[i][1]);
+                                    stroke(255, 0, 0);
+                                    strokeWeight(3);
+                                    line(cP[0], cP[1], cE[0], cE[1]);
+                                    strokeWeight(1.5);
+                                    noStroke();
+                                    frameP = 15;
+                                    shake = 15;
+                                    
+                                    turnP = 0;
+                                    frameAI = 30;
+                                    used[charS] = true;
+                                    charS++;
+                                }
+                                i++;
+                            }
+                        }
+                    }
+                    if(n.length == 0){
+                        turnP = 0;
+                        used[charS] = true;
+                        charS++;
+                    }
+                }
+            }
+            else if(charS == rCs.length){
+                charS = 0;
+            }
+            var i = 0;
+            var end = true;
+            while(i < rCs.length){
+                if(used[i] == false){
+                    end = false;
+                }
+                i++;
+            }
+            if(end){
+                var i = 0;
+                while(i < rCs.length){
+                    var j = 0;
+                    while(j < rCs[i][10].length){
+                        if(rCs[i][10][j][0] == "Poison" && rCs[i][10][j][1] > 0){
+                            var dmg = 6+Math.floor(5*Math.random());
+                            rCs[i][1] -= dmg;
+                            rCs[i][10][j][1]--;
+                            dmgFade.push(20);
+                            dmgTx.push(rCs[i][8]);
+                            dmgTy.push(rCs[i][9]);
+                            dmgDmg.push(dmg);
+                        }
+                        j++;
+                    }
+                    if(rCs[i][7] == "Heal"){
+                        var trgt = Math.floor(rCs.length*Math.random());
+                        rCs[trgt][1] = constrain(rCs[trgt][1]+10, 0, rCs[trgt][2]);
+                    }
+                    i++;
+                }
+                turn++;
+                AIturn = false;
+                used = [false, false, false];
+                charS = 0;
+            }
+            fill(255, 255, 255);
+            stroke(0, 0, 0, 0.4);
+            rRect(200, 650, 300, 100, 10);
+            fill(0, 0, 0);
+            fontSize(15);
+            textAlign('center');
+            if(turnP == 0 && charS < rCs.length){
+                text("Turn R"+turn+": "+rCs[charS][0]+"-Move", 350, 682);
+            }
+            else if(charS < rCs.length){
+                text("Turn R"+turn+": "+rCs[charS][0]+"-Attack", 350, 682);
+            }
+        }
+        var tile = tileOver();
+        if(tile[0] >= 0 && tile[0] <= 6 && tile[1] >= 0 && tile[1] <= 6){
+            fill(0, 0, 0, 0.1);
+            noStroke(); 
+            tileF(tile[0], tile[1]);
+        }
+        var i = 6;
+        var j = 0;
+        var d = 0;
+        noFill();
+        while(d < 13){
+            if(d < 7){
+                i = 6-d;
+                j = 0;
+            }
+            else{
+                i = 0;
+                j = d-6;
+            }
+            while(i < 7 && j < 7){
+                var k = 0;
+                while(k < bCs.length){
+                    if(bCs[k][8] == i && bCs[k][9] == j){
+                        var pos = tileC(bCs[k][8], bCs[k][9]);
+                        if(turn >= 1 && !AIturn && charS == k){
+                            stroke(0, 255, 0, 0.5);
+                            fill(0, 255, 0, 0.2);
+                        }
+                        else{
+                            stroke(0, 0, 255, 0.5);
+                        }
+                        tileF(bCs[k][8], bCs[k][9]);
+                        noStroke(0);
+                        char(pos[0], pos[1], bCs[k][0]);
+                        if(bCs[k][1] !== bCs[k][2]){
+                            fill(0, 0, 0);
+                            rect(pos[0]-10, pos[1]-30, 20, 5);
+                            fill(0, 0, 150);
+                            var m = 0;
+                            while(m < bCs[k][10].length){
+                                if(bCs[k][10][m][0] == "Poison" && bCs[k][10][m][1] > 0){
+                                    fill(0, 150, 0);
+                                }
+                                m++;
+                            }
+                            rect(pos[0]-10, pos[1]-30, 20*(bCs[k][1]/bCs[k][2]), 5);
+                        }
+                        noFill();
+                    }
+                    k++;
+                }
+                var k = 0;
+                while(k < rCs.length){
+                    if(rCs[k][8] == i && rCs[k][9] == j){
+                        var pos = tileC(rCs[k][8], rCs[k][9]);
+                        if(turn >= 1 && AIturn && charS == k){
+                            stroke(0, 255, 0, 0.5);
+                            fill(0, 255, 0, 0.2);
+                        }
+                        else{
+                            stroke(255, 0, 0, 0.5);
+                        }
+                        tileF(rCs[k][8], rCs[k][9]);
+                        noStroke(0);
+                        char(pos[0], pos[1], rCs[k][0]);
+                        if(rCs[k][1] !== rCs[k][2]){
+                            fill(0, 0, 0);
+                            rect(pos[0]-10, pos[1]-30, 20, 5);
+                            fill(150, 0, 0);
+                            var m = 0;
+                            while(m < rCs[k][10].length){
+                                if(rCs[k][10][m][0] == "Poison" && rCs[k][10][m][1] > 0){
+                                    fill(0, 150, 0);
+                                }
+                                m++;
+                            }
+                            rect(pos[0]-10, pos[1]-30, 20*(rCs[k][1]/rCs[k][2]), 5);
+                        }
+                        noFill();
+                    }
+                    k++;
+                }
+                var tileT = tilemap[i][j];
+                if(tileT == 2){
+                    noStroke();
+                    fill(0, 0, 200);
+                    tileF(i, j);
+                    noFill();
+                }
+                if(tileT == 3){
+                    var cen = tileC(i, j);
+                    fill(230, 230, 230);
+                    stroke(210, 210, 210);
+                    quad(cen[0]-30, cen[1], cen[0]-30, cen[1]-40, cen[0], cen[1]+15-40, cen[0], cen[1]+15);
+                    quad(cen[0]+30, cen[1], cen[0]+30, cen[1]-40, cen[0], cen[1]+15-40, cen[0], cen[1]+15);
+                    fill(240, 240, 240);
+                    stroke(220, 220, 220);
+                    quad(cen[0]+30, cen[1]-40, cen[0], cen[1]+15-40, cen[0]-30, cen[1]-40, cen[0], cen[1]-55);
+                }
+                i += 1;
+                j += 1;
+            }
+            d++;
+        }
+        //var dmgFade = 0;
+        //var dmgTx = 0;
+        //var dmgTy = 0;
+        //var dmgDmg = 0;
+        var i = 0;
+        while(i < dmgFade.length){
+            fontSize(12);
+            fill(0, 0, 0, dmgFade[i]/20);
+            dmgFade[i]--;
+            var locT = tileC(dmgTx[i], dmgTy[i]);
+            text(dmgDmg[i], locT[0], locT[1] - 40);
+            if(dmgFade[i] < 0){
+                dmgFade.splice(i, 1);
+                dmgTx.splice(i, 1);
+                dmgTy.splice(i, 1);
+                dmgDmg.splice(i, 1);
+                i--;
+            }
+            i++;
+        }
+        //Custom cursor
+        stroke(255, 255, 255);
+        noFill();
+        quad(mX-5, mY, mX, mY-5, mX+5, mY, mX, mY+5);
+        stroke(0, 0, 0);
+        if(!click){
+            fill(0, 0, 0, 0.2);
+        }
+        else{
+            fill(0, 0, 0, 0.8);
+        }
+        quad(mX-4, mY, mX, mY-4, mX+4, mY, mX, mY+4);
+        if(click && dist(sX, sY, mX, mY) > 10){
+            stroke(0, 0, 0, constrain((dist(sX, sY, mX, mY)/200)-0.05, 0, 0.2));
+            line(sX, sY, mX, mY);
+            noFill();
+            quad(sX-1, sY, sX, sY-1, sX+1, sY, sX, sY+1);
+        }
+        release = false;
+            c.restore();
+            shake *= 0.9;
+        }
+    }
+    
+    setInterval(draw, 22);
+    
+    function tileF(x, y){
+        var posX = 70+40*x+40*y;
+        var posY = 340-20*x+20*y;
+        quad(posX, posY, posX+40, posY-20, posX+80, posY, posX+40, posY+20);
+    }
+    function tileC(x, y){
+        var posX = 110+40*x+40*y;
+        var posY = 340-20*x+20*y;
+        return [posX, posY];
+    }
+    function fontSize(s){
+        c.font = s+"px sans-serif";
+    }
+    function text(text, x, y){
+        c.fillText(text, x, y);
+    }
+    function textAlign(t){
+        c.textAlign = t;
+    }
+    function charInit(character, x, y){
+        var health = 0;
+        var damage = 0;
+        var range = 0;
+        var move = 0;
+        var special = "None";
+        if (character === "Rex"){
+            health = 85;
+            damage = 36;
+            range = 3;
+            move = 3;
+            special = "None";
+        } else if (character === "Cole"){
+            health = 120;
+            damage = 41;
+            range = 1;
+            move = 4;
+            special = "None";
+        } else if (character === "Hearth"){
+            health = 95;
+            damage =21
+            range = 4;
+            move = 2;
+            special = "Multi";
+        }else if (character === "Alex"){
+            health = 125;
+            damage = 31;
+            range = 1;
+            move = 3;
+            special = "Multi";
+        }else if (character === "Kayla"){
+            health = 105;
+            damage = 21;
+            range = 3;
+            move = 2;
+            special = "Heal";
+        }else if (character === "Max"){
+            health = 90;
+            damage = 26;
+            range = 2;
+            move = 3;
+            special = "Poison";
+        }
+        return [character, health, health, damage, damage+9, range, move, special, x, y, []];
+    }
+    function rInit(num){
+        var characterA = ["Rex", "Cole", "Hearth", "Alex", "Kayla", "Max"];
+        var characterU = [];
+        var locationsU = [];
+        var i = 0;
+        while(i < num){
+            var cTest = -1;
+            while(cTest == -1){
+                cTest = Math.floor(Math.random()*6);
+                var j = 0;
+                if(i > 0){
+                    while(j < characterU.length){
+                        if(characterU[j] == cTest){
+                            cTest = -1;
+                        }
+                        j++;
+                    }
+                }
+            }
+            var locTest = [-1, -1];
+            while(locTest[0] == -1 || tilemap[locTest[0]][locTest[1]] >= 2 ){
+                locTest = [5+Math.floor(Math.random()*2), Math.floor(Math.random()*7)];
+                var j = 0;
+                if(i > 0){
+                    while(j < locationsU.length){
+                        if((locationsU[j][0] == locTest[0] && locationsU[j][1] == locTest[1])){
+                            locTest = [-1, -1];
+                        }
+                        j++;
+                    }
+                }
+            }
+            characterU.push(cTest);
+            locationsU.push(locTest);
+            rCs.push(charInit(characterA[cTest], locTest[0], locTest[1]));
+            tilemap[locTest[0]][locTest[1]] = 1;
+            i++;
+        }
+    }
+    function char(x, y, ch){
+        if(ch == "Rex"){
+            var rex = document.getElementById('rex');
+            c.drawImage(rex, x-25, y-25, 50, 50);
+        }
+        if(ch == "Cole"){
+            var cole = document.getElementById('cole');
+            c.drawImage(cole, x-25, y-25, 50, 50);
+        }
+        if(ch == "Hearth"){
+            var hearth = document.getElementById('hearth');
+            c.drawImage(hearth, x-25, y-25, 50, 50);
+        }
+        if(ch == "Alex"){
+            var alex = document.getElementById('alex');
+            c.drawImage(alex, x-25, y-25, 50, 50);
+        }
+        if(ch == "Kayla"){
+            var kayla = document.getElementById('kayla');
+            c.drawImage(kayla, x-25, y-25, 50, 50);
+        }
+        if(ch == "Max"){
+            var max = document.getElementById('max');
+            c.drawImage(max, x-25, y-25, 50, 50);
+        }
+        //rect(x-10, y-20, 20, 20);
+    }
+    function tileOver(){
+        var dX = mX-70;
+        var dY = mY-340;
+        var nX = dX/80-dY/40;
+        var nY = dX/80+dY/40;
+        return [Math.floor(nX), Math.floor(nY)];
+    }
+    function tileSOver(){
+        var dX = sX-70;
+        var dY = sY-340;
+        var nX = dX/80-dY/40;
+        var nY = dX/80+dY/40;
+        return [Math.floor(nX), Math.floor(nY)];
+    }
+    function dist(x1, y1, x2, y2){
+        return Math.sqrt(Math.pow((x2-x1), 2)+Math.pow((y2-y1), 2));
+    }
+    function constrain(test, low, high){
+        if(test < low){
+            return low;
+        }
+        else if(test > high){
+            return high;
+        }
+        else{
+            return test;
+        }
+    }
+    function rect(x, y, w, h){
+        c.beginPath();
+        c.moveTo(x, y);
+        c.lineTo(x+w, y);
+        c.lineTo(x+w, y+h);
+        c.lineTo(x, y+h);
+        c.closePath();
+        color();
+    }
+    function rRect(x, y, w, h, r){
+        c.beginPath();
+        c.moveTo(x, y+r);
+        c.lineTo(x, y+h-r);
+        c.arcTo(x, y+h, x+r, y+h, r);
+        c.lineTo(x+w-r, y+h);
+        c.arcTo(x+w, y+h, x+w, y+h-r, r);
+        c.lineTo(x+w, y+r);
+        c.arcTo(x+w, y, x+w-r, y, r);
+        c.lineTo(x+r, y);
+        c.arcTo(x, y, x, y+r, r);
+        color();
+    }
+    function circle(x, y, r){
+        c.moveTo(x, y);
+        c.arc(x, y, r, 0, 2*Math.PI, true);
+        c.fill();
+    }
+    function quad(x1, y1, x2, y2, x3, y3, x4, y4){
+        c.beginPath();
+        c.moveTo(x1, y1);
+        c.lineTo(x2, y2);
+        c.lineTo(x3, y3);
+        c.lineTo(x4, y4);
+        c.closePath();
+        color();
+    }
+    function line(x1, y1, x2, y2){
+        c.beginPath();
+        c.moveTo(x1, y1);
+        c.lineTo(x2, y2);
+        color();
+    }
+    function fill(r, g, b, a){
+        if(a === undefined){
+            a = 1;
+        }
+        c.fillStyle = "rgba("+r+", "+g+", "+b+", "+a+")";
+    }
+    function stroke(r, g, b, a){
+        if(a === undefined){
+            a = 1;
+        }
+        c.strokeStyle = "rgba("+r+", "+g+", "+b+", "+a+")";
+    }
+    function strokeWeight(px){
+        c.lineWidth = px;
+    }
+    function noFill(){
+        c.fillStyle = "rgba(0, 0, 0, 0)";
+    }
+    function noStroke(){
+        c.strokeStyle = "rgba(0, 0, 0, 0)";
+    }
+    function color(){
+        c.fill();
+        c.stroke();
+    }
+    function background(r, g, b, a){
+        noStroke();
+        if(a === undefined){
+            a = 1;
+        }
+        fill(r, g, b, a);
+        noStroke();
+        rect(0, 0, width, height);
+    }
+    canvas.onmousedown = function(e){
+        
+        if(!click){
+            sX = event.clientX;
+            sY = event.clientY;
+        }
+        click = true;
+    }
+    canvas.onmouseup = function(e){
+        click = false;
+        release = true;
+    }
+    canvas.onmousemove = function(e){
+        
+        mX = event.clientX
+        mY = event.clientY;
+        
+    }
+</script>
+
+</body>
+</html>
